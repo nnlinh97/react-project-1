@@ -4,6 +4,7 @@ import ProductItem from '../../components/ProductItem/ProductItem';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import callAPI from './../../utils/callAPI';
+import * as Actions from './../../actions/index';
 
 class ProductListPage extends Component {
     constructor(props) {
@@ -13,17 +14,18 @@ class ProductListPage extends Component {
         }
     }
     componentDidMount() {
-        callAPI("/products",'GET',null).then((Response) => {
-            this.setState({
-                products: Response.data
-            });
-        });
+        // callAPI("/products", 'GET', null).then((res) => {
+        //     // this.setState({
+        //     //     products: Response.data
+        //     // });
+        //     this.props.getProductList(res.data);
+        // });
+        this.props.getProductList();
     }
 
     render() {
-        // let {products} = this.props;
-        let { products } = this.state;
-
+        let {products} = this.props;
+        // let { products } = this.state;
         return (
             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <Link to="/product/add" type="button" className="btn btn-primary mb-10">
@@ -46,10 +48,36 @@ class ProductListPage extends Component {
                         key={index}
                         product={product}
                         index={index}
+                        onDeleteProduct={this.onDeleteProduct}
                     />
                 );
             });
         }
+        return result;
+    }
+
+    onDeleteProduct = (id) => {
+        callAPI(`/products/${id}`, 'DELETE', null).then((response) => {
+            if (response.status === 200) {
+                let { products } = this.state;
+                let index = this.findIndex(products, id);
+                if (index !== -1) {
+                    products.splice(index, 1);
+                    this.setState({
+                        products: products
+                    });
+                }
+            }
+        });
+    }
+
+    findIndex = (products, id) => {
+        let result = -1;
+        products.forEach((product, index) => {
+            if (product.id === id) {
+                result = index;
+            }
+        });
         return result;
     }
 }
@@ -62,7 +90,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, action) => {
     return {
-
+        getProductList: () => {
+            dispatch(Actions.actionGetProductListRequest());
+        }
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ProductListPage);

@@ -23,12 +23,20 @@ class ProductItem extends Component {
                     </Link>
                 </td>
                 <td>
-                    <button type="button" className="btn btn-danger">
+                    <button onClick={() => this.onDeleteProduct(product.id)} type="button" className="btn btn-danger">
                         <span className="glyphicon glyphicon-trash"></span>
                     </button>
                 </td>
             </tr>
         );
+    }
+
+    onDeleteProduct = (id) => {
+        //confirm phải có cái cmt bên cạnh mới chạy được
+        if(confirm("Bạn chắc chắn muốn xóa?")){ //eslint-disable-line
+            this.props.onDeleteProduct(id);
+        }
+
     }
 }
 

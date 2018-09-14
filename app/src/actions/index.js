@@ -1,13 +1,18 @@
-import React, { Component } from 'react';
+import * as Types from './../constants/ActionTypes';
+import callAPI from '../utils/callAPI';
 
-class index extends Component {
-    render() {
-        return (
-            <div>
-                
-            </div>
-        );
+
+export const actionGetProductListRequest = () => {
+    return (dispatch) => {
+        return callAPI("/products", "GET", null).then((res) => {
+            dispatch(actionGetProductList(res.data));
+        });
     }
 }
 
-export default index;
+export const actionGetProductList = (products) => {
+    return {
+        type: Types.GET_PRODUCT_LIST,
+        products: products
+    }
+}

@@ -4,6 +4,12 @@ import Menu from './components/Menu/Menu';
 import routes from './routes';
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 //finish 93
+// middleware trong redux là lớp nằm giữa reducers và dispatch action giúp trì hoãn việc dispatch (get data xong mới dispatch)
+// hoạt động: 
+    //trước khi reducers nhận được action 
+    //sau khi action nhận được dispatch
+//thường dùng để xử lý các async action (API request)
+//một số thư viện: redux-thunk, redux-saga, redux-overvable, redux-promise
 class App extends Component {
     render() {
         return (
