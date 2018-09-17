@@ -3,16 +3,15 @@ import ProductList from '../../components/ProductList/ProductList';
 import ProductItem from '../../components/ProductItem/ProductItem';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import callAPI from './../../utils/callAPI';
-import * as Actions from './../../actions/index';
+import * as Actions from './../../actions/actionRequest';
 
 class ProductListPage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            products: []
-        }
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         products: []
+    //     }
+    // }
     componentDidMount() {
         // callAPI("/products", 'GET', null).then((res) => {
         //     // this.setState({
@@ -57,29 +56,22 @@ class ProductListPage extends Component {
     }
 
     onDeleteProduct = (id) => {
-        callAPI(`/products/${id}`, 'DELETE', null).then((response) => {
-            if (response.status === 200) {
-                let { products } = this.state;
-                let index = this.findIndex(products, id);
-                if (index !== -1) {
-                    products.splice(index, 1);
-                    this.setState({
-                        products: products
-                    });
-                }
-            }
-        });
+        // callAPI(`/products/${id}`, 'DELETE', null).then((response) => {
+        //     if (response.status === 200) { //OK
+        //         let { products } = this.state;
+        //         let index = this.findIndex(products, id);
+        //         if (index !== -1) {
+        //             products.splice(index, 1);
+        //             this.setState({
+        //                 products: products
+        //             });
+        //         }
+        //     }
+        // });
+        this.props.deleteProduct(id);
     }
 
-    findIndex = (products, id) => {
-        let result = -1;
-        products.forEach((product, index) => {
-            if (product.id === id) {
-                result = index;
-            }
-        });
-        return result;
-    }
+    
 }
 
 const mapStateToProps = (state) => {
@@ -92,6 +84,9 @@ const mapDispatchToProps = (dispatch, action) => {
     return {
         getProductList: () => {
             dispatch(Actions.actionGetProductListRequest());
+        },
+        deleteProduct: (id) => {
+            dispatch(Actions.actionDeleteProductRequest(id));
         }
     }
 }

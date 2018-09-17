@@ -11,6 +11,11 @@ const menus = [
         name: "Danh Sách Sản Phẩm",
         to: "/product-list",
         exact: false
+    },
+    {
+        name: "Danh Sách Người Dùng",
+        to: "/user-list",
+        exact: false
     }
 ];
 
